@@ -9,6 +9,13 @@ app.use(bodyParser.json());
 router.get('/', function(req,res) {
     res.sendFile(path.join(__dirname +"/index.html"));
 })
+
+router.post('/customer-in', function(req, res){
+    console.log(req);
+    // do shit with req
+    res.send("Send response or display webpage");
+})
+
 app.get('/', router);
 
 app.set('port', 8080);
