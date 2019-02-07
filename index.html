@@ -35,18 +35,15 @@
     <script>
         function analyze() {
             console.log(document.getElementById('note-textarea').value);
-            const request = new XMLHttpRequest();
-            const url='/analyze';
-            request.open("post", url);
-            request.send({test:"123", test2:""});
-            Http.onreadystatechange=(e)=>{
-            console.log(Http.responseText)
-            }
+            var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
+            xmlhttp.open("POST", "/analyze");
+            xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xmlhttp.send(JSON.stringify({ "text": document.getElementById('note-textarea').value }));
         }
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="js/script.js"></script>
-    <script src="js/record.js"></script>
+    <!-- <script src="js/record.js"></script> -->
 </body>
 
 </html>

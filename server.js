@@ -7,12 +7,10 @@ var router = express.Router();
 app.use(express.static('public'))
 app.use('/js', express.static(path.join(__dirname,'public')))
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true })); 
 
 app.post('/analyze', function(req,res) {
     console.log("Request ", req);
     console.log(req.body);
-    // fetch("I need to get a loan");
     res.send("hello");
 })
 
