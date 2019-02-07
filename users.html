@@ -1,0 +1,62 @@
+<html>
+
+<head>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <h1> Users </h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Created At</th>
+                <th scope="col">Phone Number</th>
+                <th scope="col">Name</th>
+            </tr>
+        </thead>
+        <tbody id="tableData">
+        </tbody>
+    </table>
+    </div>
+</body>
+<script src="https://npmcdn.com/parse@2.1.0/dist/parse.min.js"></script>
+<script>
+    Parse.initialize("myAppId", "myJSKey");
+    Parse.serverURL = "http://alphaomega.southindia.cloudapp.azure.com/parse";
+
+    const UserQuery = new Parse.Query("NFCUser");
+    UserQuery.find().then(function(results) {
+        console.log(results);
+        tableString = "";
+        id = 1;
+        results.forEach((x) => {
+            tableString= tableString 
+            +  "<tr>"
+            +  "  <td>" + id + "</td>"
+            +  "  <td>" + x.get('createdAt').toLocaleString() + "</td>"
+            +  "  <td>" + x.get('phone') + "</td>"
+            +  "  <td>" + x.get('name') + "</td>"
+            +  "</tr>";
+            id+=1;
+            document.getElementById('tableData').innerHTML = tableString;
+            console.log(x.get('phone'))
+        });
+    })
+
+    let subscription = UserQuery.subscribe();
+    subscription.on('open', () => {
+        console.log('subscription opened');
+    });
+
+    subscription.on('create', (object) => {
+        console.log('object created');
+        console.log(object);
+    });
+
+    subscription.on('update', (object) => {
+        console.log(object); 
+    });
+</script>
+</html>

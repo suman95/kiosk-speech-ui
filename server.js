@@ -4,36 +4,14 @@ var app = express();
 var path = require('path');
 var router = express.Router();
 
-const request = require('request')
 app.use(express.static('public'))
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true })); 
 
-function fetch(queryString) {
-    request.post('https://api.dialogflow.com/v1/query?v=20150910', {
-        json: {
-            contexts: [],
-            lang: "en",
-            query: queryString,
-            sessionId: "12345",
-            timezone: "America/New_York"
-        },
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer 56a88de7f0b8456bbdbe6d8bd696708e'
-        }
-    }, (error, res, body) => {
-        if (error) {
-            console.error(error)
-            return
-        }
-        console.log(`statusCode: ${res.statusCode}`)
-        console.log(body)
-    })
-}
-app.post('/clicked', function(req,res) {
+app.post('/analyze', function(req,res) {
+    console.log("Request ", req);
     console.log(req.body);
-    console.log("called this...");
-    fetch("I need to get a loan");
+    // fetch("I need to get a loan");
     res.send("hello");
 })
 
@@ -50,6 +28,10 @@ router.get('/', function (req, res) {
 
 app.get('/chequenfc', function(req,res) {
     res.sendFile(path.join(__dirname+"/depositbox.html"));
+})
+
+app.get('/users', function(req,res) {
+    res.sendFile(path.join(__dirname+"/users.html"));
 })
 
 app.post('/customer-in', function (req, res) {
