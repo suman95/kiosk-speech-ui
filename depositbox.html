@@ -1,26 +1,36 @@
 <html>
 
 <head>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 </head>
 
-<body>
+<body class="amber accent-3">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <div class="container">
-        <h1> Cheque Deposit Box </h1>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Created At</th>
-                    <th scope="col">Phone Number</th>
-                    <th scope="col">Name</th>
-                </tr>
-            </thead>
-            <tbody id="tableData">
-            </tbody>
-        </table>
+        <div class="row">
+            <div class="col s12">
+                <div class="card" style="margin-top: 70px">
+                    <div class="card-content">
+                        <h2 class="center-align" style="color: #370841">Cheque Deposit Box</h2>
+                        <br>
+                        <table class="highlight">
+                            <thead>
+                            <tr>
+                                <th scope="col" class="center-align">ID</th>
+                                <th scope="col" class="center-align">Created At</th>
+                                <th scope="col" class="center-align">Phone Number</th>
+                                <th scope="col" class="center-align">Name</th>
+                            </tr>
+                            </thead>
+                            <tbody id="tableData">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</body>
 <script src="https://npmcdn.com/parse@2.1.0/dist/parse.min.js"></script>
 <script>
     function updateTable() {
@@ -35,10 +45,10 @@
             results.forEach((x) => {
                 tableString = tableString
                     + "<tr>"
-                    + "  <td>" + id + "</td>"
-                    + "  <td>" + x.get('createdAt').toLocaleString() + "</td>"
-                    + "  <td>" + x.get('phone') + "</td>"
-                    + "  <td>" + x.get('name') + "</td>"
+                    + "  <td class='center-align'><b>" + id + "</b></td>"
+                    + "  <td class='center-align'>" + x.get('createdAt').toLocaleString() + "</td>"
+                    + "  <td class='center-align'>" + x.get('phone') + "</td>"
+                    + "  <td class='center-align'>" + x.get('name') + "</td>"
                     + "</tr>";
                 id += 1;
                 document.getElementById('tableData').innerHTML = tableString;
@@ -90,5 +100,5 @@
         analyze();
     }, 10000)
 </script> -->
-
+</body>
 </html>
