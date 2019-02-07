@@ -1,33 +1,51 @@
 <!DOCTYPE html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Kiosk Speech UI</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shoelace-css/1.0.0-beta16/shoelace.css">
-        <link rel="stylesheet" href="styles.css">
-        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet">
-    </head>
-    <body>
-        <div class="container">
-            <h1>Kiosk Speech UI</h1>
-            <h3 class="no-browser-support">Sorry, Your Browser Doesn't Support the Web Speech API. Try Opening This Demo In Google Chrome.</h3>
-            <div class="app"> 
-                <h3>Add New Note</h3>
-                <div class="input-single">
-                    <textarea id="note-textarea" placeholder="Create a new note by typing or using voice recognition." rows="6"></textarea>
-                </div>         
-                <button id="start-record-btn" title="Start Recording">Start Recognition</button>
-                <button id="pause-record-btn" title="Pause Recording">Pause Recognition</button>
-                <button id="save-note-btn" class="btn btn-success" title="Save Note">Analyze</button>   
-                <p id="recording-instructions">Press the <strong>Start Recognition</strong> button and allow access.</p>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Kiosk Speech UI</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shoelace-css/1.0.0-beta16/shoelace.css">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Kiosk Speech UI</h1>
+        <h3 class="no-browser-support">Sorry, Your Browser Doesn't Support the Web Speech API. Try Opening This Demo In
+            Google Chrome.</h3>
+        <div class="app">
+            <h3>Add New Note</h3>
+            <div class="input-single">
+                <textarea id="note-textarea" placeholder="Create a new note by typing or using voice recognition." rows="6"></textarea>
             </div>
+            <button id="start-record-btn" title="Start Recording">Start Recognition</button>
+            <button id="pause-record-btn" title="Pause Recording">Pause Recognition</button>
+            <button id="myBtn" class="btn btn-success" onclick="analyze()" title="Save Note">Analyze</button>
+            <p id="recording-instructions">Press the <strong>Start Recognition</strong> button and allow access.</p>
         </div>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-        <script src="script.js"></script>
-    </body>
+    </div>
+    <script>
+            function analyze() {
+                console.log(document.getElementById('note-textarea').value);
+                fetch('/clicked', { method: 'POST', body: JSON.stringify({data: document.getElementById('note-textarea').value}) })
+                    .then(function (response) {
+                        if (response.ok) {
+                            console.log('Click was recorded');
+                            return;
+                        }
+                        throw new Error('Request failed.');
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+        }
+        </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
 </html>
-
-
