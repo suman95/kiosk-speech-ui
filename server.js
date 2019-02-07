@@ -5,6 +5,7 @@ var path = require('path');
 var router = express.Router();
 
 app.use(express.static('public'))
+app.use('/js', express.static(path.join(__dirname,'public')))
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true })); 
 
