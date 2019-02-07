@@ -3,6 +3,7 @@ var bodyParser = require('body-parser');
 var app = express();
 var path = require('path');
 var router = express.Router();
+
 const request = require('request')
 app.use(express.static('public'))
 app.use(bodyParser.json());
@@ -32,12 +33,23 @@ function fetch(queryString) {
 app.post('/clicked', function(req,res) {
     console.log(req.body);
     console.log("called this...");
-    //fetch("I need to get a loan");
+    fetch("I need to get a loan");
     res.send("hello");
+})
+
+app.get('/getdata', function(req,res) {
+
+    res.send({
+        somedata: "data"
+    })
 })
 
 router.get('/', function (req, res) {
     res.sendFile(path.join(__dirname + "/index.html"));
+})
+
+app.get('/chequenfc', function(req,res) {
+    res.sendFile(path.join(__dirname+"/depositbox.html"));
 })
 
 app.post('/customer-in', function (req, res) {
@@ -45,8 +57,6 @@ app.post('/customer-in', function (req, res) {
     // do shit with req
     res.send("Send response or display webpage");
 })
-
-
 
 app.get('/', router);
 
