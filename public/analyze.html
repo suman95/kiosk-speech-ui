@@ -31,15 +31,6 @@
     </div>
 </div>
 <script>
-    window.onload = function onLoad() {
-        var circle = new ProgressBar.Line('#progress', {
-            color: '#FCB03C',
-            duration: 1000,
-            easing: 'easeInOut'
-        });
-
-        circle.animate(0.24);
-    };
     var ctx = document.getElementById("keyParamsChart").getContext('2d');
     var myChart = new Chart(ctx, {
         type: 'doughnut',
@@ -100,12 +91,20 @@
     console.log(urlParams.get('q'));
     Parse.initialize("myAppId", "myJSKey");
     Parse.serverURL = "http://alphaomega.southindia.cloudapp.azure.com/parse";
+
+    var circle = new ProgressBar.Line('#progress', {
+        color: '#FCB03C',
+        duration: 1000,
+        easing: 'easeInOut'
+    });
+
     const params = {query: "I want to deactivate my debit card. I represent XYZ. Sure my number is 9583364972. Can you also start processing my KYC. I want to know the loans offered by you."};
     Parse.Cloud.run("analyzeText", params).then(function (res) {
         console.log(res);
         var sentimentScore = (parseFloat(res["sentimentAnalytics"]["score"]) * 100).toFixed(2);
         document.getElementById("resolvedQuery").innerHTML = res["dialogFlow"]["resolvedQuery"];
         document.getElementById("sentimentScore").innerHTML = sentimentScore + "%";
+        circle.animate(sentimentScore/100);
     });
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
