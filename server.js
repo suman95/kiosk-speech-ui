@@ -10,7 +10,8 @@ app.use(bodyParser.json());
 
 app.post('/analyze', function(req,res) {
     console.log("Request ", req);
-    console.log(req.body);
+    console.log(req.body.text);
+    res.render("analyze", { title: 'Hey', message: req.body.text });
     res.send("hello");
 })
 
