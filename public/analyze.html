@@ -24,7 +24,7 @@
                 <span class="card-title"><b>Key Phrases</b></span>
                 <canvas id="keyPhrasesChart"></canvas>
                 <br>
-                <span class="card-title"><b>Sentiment - <span class="green-text darken-4">50%</span></b></span>
+                <span class="card-title"><b>Sentiment - <span id="sentimentScore" class="green-text darken-4">24%</span></b></span>
                 <div id="progress"></div>
             </div>
         </div>
@@ -38,16 +38,16 @@
             easing: 'easeInOut'
         });
 
-        circle.animate(0.5);
+        circle.animate(0.24);
     };
     var ctx = document.getElementById("keyParamsChart").getContext('2d');
     var myChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
             "labels": [
-                "open a bank account",
-                "9787110370",
-                "Tata Steel"
+                "loan",
+                "card deactivation",
+                "XYZ"
             ],
             "datasets": [
                 {
@@ -72,13 +72,15 @@
         type: 'doughnut',
         data: {
             "labels": [
-                "bank account",
-                "mobile number"
+                "debit card",
+                "XYZ",
+                "KYC"
             ],
             "datasets": [
                 {
                     "label": "My First Dataset",
                     "data": [
+                        1,
                         1,
                         1
                     ],
@@ -98,10 +100,12 @@
     console.log(urlParams.get('q'));
     Parse.initialize("myAppId", "myJSKey");
     Parse.serverURL = "http://alphaomega.southindia.cloudapp.azure.com/parse";
-    const params = {query: "I want to open a bank account. My mobile number is 9787110370"};
+    const params = {query: "I want to deactivate my debit card. I represent XYZ. Sure my number is 9583364972. Can you also start processing my KYC. I want to know the loans offered by you."};
     Parse.Cloud.run("analyzeText", params).then(function (res) {
         console.log(res);
+        var sentimentScore = (parseFloat(res["sentimentAnalytics"]["score"]) * 100).toFixed(2);
         document.getElementById("resolvedQuery").innerHTML = res["dialogFlow"]["resolvedQuery"];
+        document.getElementById("sentimentScore").innerHTML = sentimentScore + "%";
     });
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
