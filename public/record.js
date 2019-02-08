@@ -75,9 +75,9 @@ function startRecording() {
 	}).catch(function(err) {
 		  //enable the record button if getUserMedia() fails
 		  console.log(err);
-    	// recordButton.disabled = false;
-    	// stopButton.disabled = true;
-    	// pauseButton.disabled = true
+    	recordButton.disabled = false;
+    	stopButton.disabled = true;
+    	pauseButton.disabled = true
 	});
 }
 
@@ -149,17 +149,23 @@ function createDownloadLink(blob) {
 	upload.href="#";
 	upload.innerHTML = "Upload";
 	upload.addEventListener("click", function(event){
-		  var xhr=new XMLHttpRequest();
-		  xhr.onload=function(e) {
-		      if(this.readyState === 4) {
-		          console.log("Server returned: ",e.target.responseText);
-		      }
-		  };
+		//   var xhr=new XMLHttpRequest();
+		//   xhr.onload=function(e) {
+		//       if(this.readyState === 4) {
+		//           console.log("Server returned: ",e.target.responseText);
+		//       }
+		//   };
 		  var fd=new FormData();
-		  fd.append("audio_data",blob, filename);
+		  var myBlob = new Blob(["This is my blob content"], {type : "text/plain"});
+		  fd.append("upl",blob, "phaadu.wav");
 		  // post data to custom page.
-		  xhr.open("POST","upload.php",true);
-		  xhr.send(fd);
+		  fetch('http://alphaomega.southindia.cloudapp.azure.com/api/test',
+			{
+				method: 'post',
+				body: fd
+			});
+		//   xhr.open("POST","http://alphaomega.southindia.cloudapp.azure.com/uploadaudio",true);
+		//   xhr.send(fd);
 	})
 	li.appendChild(document.createTextNode (" "))//add a space in between
 	li.appendChild(upload)//add the upload link to li

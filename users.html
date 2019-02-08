@@ -34,22 +34,23 @@
 </div>
 <script src="https://npmcdn.com/parse@2.1.0/dist/parse.min.js"></script>
 <script>
+    Parse.initialize("myAppId", "myJSKey");
+    Parse.serverURL = "http://alphaomega.southindia.cloudapp.azure.com/parse";
+    
     function updateTable() {
-        Parse.initialize("myAppId", "myJSKey");
-        Parse.serverURL = "http://alphaomega.southindia.cloudapp.azure.com/parse";
-
         const UserQuery = new Parse.Query("NFCUser");
         UserQuery.find().then(function (results) {
             console.log(results);
             tableString = "";
             id = 1;
             results.forEach((x) => {
+                console.log(x);
                 tableString = tableString
                     + "<tr>"
                     + "  <td>" + id + "</td>"
                     + "  <td>" + x.get('createdAt').toLocaleString() + "</td>"
                     + "  <td>" + x.get('phone') + "</td>"
-                    + "  <td>" + x.get('name') + "</td>"
+                    + "  <td class='center-align'> <a href='/userprofile.html?accid="+x.id+"'>" + x.get('name') + "</a></td>"
                     + "</tr>";
                 id += 1;
                 document.getElementById('tableData').innerHTML = tableString;
@@ -57,9 +58,6 @@
             });
         })
     }
-    Parse.initialize("myAppId", "myJSKey");
-    Parse.serverURL = "http://alphaomega.southindia.cloudapp.azure.com/parse";
-
     const UserQuery = new Parse.Query("NFCUser");
 
     let subscription = UserQuery.subscribe();

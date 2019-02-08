@@ -48,7 +48,7 @@
                     + "  <td class='center-align'><b>" + id + "</b></td>"
                     + "  <td class='center-align'>" + x.get('createdAt').toLocaleString() + "</td>"
                     + "  <td class='center-align'>" + x.get('phone') + "</td>"
-                    + "  <td class='center-align'>" + x.get('name') + "</td>"
+                    + "  <td class='center-align'> <a href='/userprofile.html?accid="+x.get('objectId')+"'>" + x.get('name') + "</a></td>"
                     + "</tr>";
                 id += 1;
                 document.getElementById('tableData').innerHTML = tableString;
