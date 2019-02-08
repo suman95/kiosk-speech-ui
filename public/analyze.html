@@ -1,34 +1,37 @@
 <html>
+
 <head>
     <title>DBS | Analyze</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 </head>
-<body class="amber accent-3">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.min.js"></script>
-<script src="https://npmcdn.com/parse@2.1.0/dist/parse.min.js"></script>
-<script src="progress.js"></script>
 
-<div class="row">
-    <div class="col s4 offset-s4">
-        <div class="card">
-            <h3 class="center-align" style="padding-top: 30px">Analysis</h3>
-            <div class="card-content">
-                <span class="card-title"><b>Resolved Query</b></span>
-                <p id="resolvedQuery">I am a very simple card. I am good at containing small bits of information.
-                    I am convenient because I require little markup to use effectively.</p>
-                <br>
-                <span class="card-title"><b>Key Parameters</b></span>
-                <canvas id="keyParamsChart"></canvas>
-                <br>
-                <span class="card-title"><b>Key Phrases</b></span>
-                <canvas id="keyPhrasesChart"></canvas>
-                <br>
-                <span class="card-title"><b>Sentiment - <span id="sentimentScore" class="green-text darken-4">24%</span></b></span>
-                <div id="progress"></div>
+<body class="amber accent-3">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.min.js"></script>
+    <script src="https://npmcdn.com/parse@2.1.0/dist/parse.min.js"></script>
+    <script src="progress.js"></script>
+
+    <div class="row">
+        <div class="col s4 offset-s4">
+            <div class="card">
+                <h3 class="center-align" style="padding-top: 30px">Analysis</h3>
+                <div class="card-content">
+                    <span class="card-title"><b>Resolved Query</b></span>
+                    <p id="resolvedQuery"></p>
+                    <br>
+                    <span class="card-title"><b>Key Parameters</b></span>
+                    <canvas id="keyParamsChart"></canvas>
+                    <br>
+                    <span class="card-title"><b>Key Phrases</b></span>
+                    <canvas id="keyPhrasesChart"></canvas>
+                    <br>
+                    <span class="card-title"><b>Sentiment - <span id="sentimentScore" class="green-text darken-4">24%</span></b></span>
+                    <div id="progress"></div>
+                </div>
             </div>
         </div>
     </div>
+<<<<<<< Updated upstream
 </div>
 <script>
     var ctx = document.getElementById("keyParamsChart").getContext('2d');
@@ -53,34 +56,84 @@
                         "rgb(54, 162, 235)",
                         "rgb(255, 205, 86)"
                     ]
+=======
+    <script>
+        window.onload = function onLoad() {
+            var circle = new ProgressBar.Line('#progress', {
+                color: '#FCB03C',
+                duration: 1000,
+                easing: 'easeInOut'
+            });
+
+            circle.animate(0.24);
+        };
+    </script>
+    <script>
+        function getRandomColor() {
+            var letters = '0123456789ABCDEF';
+            var color = '#';
+            for (var i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+        var urlParams = new URLSearchParams(window.location.search);
+        console.log(urlParams.get('q'));
+        Parse.initialize("myAppId", "myJSKey");
+        Parse.serverURL = "http://alphaomega.southindia.cloudapp.azure.com/parse";
+        const params = { query: urlParams.get('q') };
+        Parse.Cloud.run("analyzeText", params).then(function (res) {
+            console.log(res);
+            var sentimentScore = (parseFloat(res["sentimentAnalytics"]["score"]) * 100).toFixed(2);
+            document.getElementById("resolvedQuery").innerHTML = res["dialogFlow"]["resolvedQuery"];
+            // Prepare chart1 from dialogflow
+            var ctx = document.getElementById("keyParamsChart").getContext('2d');
+
+            var labels = [];
+            var dataPoints = [];
+            var bgColor = [];
+            var obj = res["dialogFlow"]["parameters"];
+            for (var key in obj) {
+                if (obj.hasOwnProperty(key)) {
+                    var val = obj[key];
+                    labels.push(obj[key]);
+                    dataPoints.push(1);
+                    bgColor.push(getRandomColor());
+                    console.log(val);
+>>>>>>> Stashed changes
                 }
-            ]
-        },
-        options: {}
-    });
-    var ctx1 = document.getElementById("keyPhrasesChart").getContext('2d');
-    var myChart1 = new Chart(ctx1, {
-        type: 'doughnut',
-        data: {
-            "labels": [
-                "debit card",
-                "XYZ",
-                "KYC"
-            ],
-            "datasets": [
-                {
-                    "label": "My First Dataset",
-                    "data": [
-                        1,
-                        1,
-                        1
-                    ],
-                    "backgroundColor": [
-                        "rgb(255, 99, 132)",
-                        "rgb(54, 162, 235)",
-                        "rgb(255, 205, 86)"
+            }
+            var myChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    "labels": labels,
+                    "datasets": [
+                        {
+                            "label": "My First Dataset",
+                            "data": dataPoints,
+                            "backgroundColor": bgColor
+                        }
                     ]
+                },
+                options: {}
+            });
+            // Prepare Chart 2
+            var ctx1 = document.getElementById("keyPhrasesChart").getContext('2d');
+            var labels1 = [];
+            var dataPoints1 = [];
+            var bgColor1 = [];
+            var obj1 = res["textAnalytics"]["keyPhrases"];
+            console.log(obj1);
+            for (var key in obj1) {
+                if (obj1.hasOwnProperty(key)) {
+                    var val = obj1[key];
+                    labels1.push(obj1[key]);
+                    dataPoints1.push(1);
+                    bgColor1.push(getRandomColor());
+                    console.log(val);
                 }
+<<<<<<< Updated upstream
             ]
         },
         options: {}
@@ -108,5 +161,27 @@
     });
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+=======
+            }
+        var myChart1 = new Chart(ctx1, {
+            type: 'doughnut',
+            data: {
+                "labels": labels1,
+                "datasets": [
+                    {
+                        "label": "My First Dataset",
+                        "data": dataPoints1,
+                        "backgroundColor": bgColor1
+                    }
+                ]
+            },
+            options: {}
+        });
+            document.getElementById("sentimentScore").innerHTML = sentimentScore + "%";
+        });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+>>>>>>> Stashed changes
 </body>
+
 </html>

@@ -18,9 +18,10 @@
     <div class="col s6"><canvas id="chart2"></canvas></div>
 </div>
 <div class="row" style="height:30%">
-        <div class="col s6"><canvas id="chart3"></canvas></div>
-        <div class="col s6"><canvas id="chart4"></canvas></div>
+        <div class="col s6"><h3>Users Entered</h3><table><tbody id="tableData"></tbody></table></div>
+        <div class="col s6"><h3>ChequeBox</h3><table><tbody id="tableDepositData"></tbody></table></div>
     </div>
+    <script src="https://npmcdn.com/parse@2.1.0/dist/parse.min.js"></script>
 <script>
     var ctx = document.getElementById("chart1").getContext('2d');
     var myChart = new Chart(ctx, {
@@ -29,43 +30,6 @@
             labels: ["9-10", "10-11", "11-12", "12-13", "13-14", "14-15"],
             datasets: [{
                 label: 'Number of Visits',
-                data: [12, 19, 3, 5, 2, 3],
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)'
-                ],
-                borderColor: [
-                    'rgba(255,99,132,1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)'
-                ],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero:true
-                    }
-                }]
-            }
-        }
-    });
-    var ctx = document.getElementById("chart3").getContext('2d');
-    var myChart = new Chart(ctx, {
-        type: 'radar',
-        data: {
-            labels: ["Cheque Deposit", "Account Opening", "Yellow", "Loan Regarding", "Purple", "Orange"],
-            datasets: [{
-                label: 'Type of queries',
                 data: [12, 19, 3, 5, 2, 3],
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
@@ -133,6 +97,51 @@
             }
         }
     });
+    Parse.initialize("myAppId", "myJSKey");
+    Parse.serverURL = "http://alphaomega.southindia.cloudapp.azure.com/parse";
+
+    function updateTable() {
+        const UserQuery = new Parse.Query("NFCUser");
+        UserQuery.find().then(function (results) {
+            console.log(results);
+            tableString = "";
+            id = 1;
+            results.forEach((x) => {
+                console.log(x);
+                tableString = tableString
+                    + "<tr>"
+                    + "  <td>" + id + "</td>"
+                    + "  <td>" + x.get('createdAt').toLocaleString() + "</td>"
+                    + "  <td>" + x.get('phone') + "</td>"
+                    + "  <td class='center-align'> <a href='/userprofile.html?accid="+x.id+"'>" + x.get('name') + "</a></td>"
+                    + "</tr>";
+                id += 1;
+                document.getElementById('tableData').innerHTML = tableString;
+                console.log(x.get('phone'))
+            });
+        })
+    }
+    updateTable();
+    function updateDepositTable() {
+        const UserQuery = new Parse.Query("NFCCheque");
+        UserQuery.find().then(function (results) {
+            console.log(results);
+            tableString = "";
+            id = 1;
+            results.forEach((x) => {
+                tableString = tableString
+                    + "<tr>"
+                    + "  <td class='center-align'><b>" + id + "</b></td>"
+                    + "  <td class='center-align'>" + x.get('createdAt').toLocaleString() + "</td>"
+                    + "  <td class='center-align'>" + x.get('phone') + "</td>"
+                    + "  <td class='center-align'> <a href='/userprofile.html?accid="+x.get('objectId')+"'>" + x.get('name') + "</a></td>"
+                    + "</tr>";
+                id += 1;
+                document.getElementById('tableDepositData').innerHTML = tableString;
+            });
+        })
+    }
+    updateDepositTable();
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 </body>
