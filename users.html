@@ -36,7 +36,7 @@
 <script>
     Parse.initialize("myAppId", "myJSKey");
     Parse.serverURL = "http://alphaomega.southindia.cloudapp.azure.com/parse";
-    
+
     function updateTable() {
         const UserQuery = new Parse.Query("NFCUser");
         UserQuery.find().then(function (results) {
