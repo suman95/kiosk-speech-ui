@@ -5,17 +5,104 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 </head>
 <body class="amber accent-3">
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.min.js"></script>
 <script src="https://npmcdn.com/parse@2.1.0/dist/parse.min.js"></script>
+<script src="progress.js"></script>
+
+<div class="row">
+    <div class="col s4 offset-s4">
+        <div class="card">
+            <h3 class="center-align" style="padding-top: 30px">Analysis</h3>
+            <div class="card-content">
+                <span class="card-title"><b>Resolved Query</b></span>
+                <p id="resolvedQuery">I am a very simple card. I am good at containing small bits of information.
+                    I am convenient because I require little markup to use effectively.</p>
+                <br>
+                <span class="card-title"><b>Key Parameters</b></span>
+                <canvas id="keyParamsChart"></canvas>
+                <br>
+                <span class="card-title"><b>Key Phrases</b></span>
+                <canvas id="keyPhrasesChart"></canvas>
+                <br>
+                <span class="card-title"><b>Sentiment - <span class="green-text darken-4">50%</span></b></span>
+                <div id="progress"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    window.onload = function onLoad() {
+        var circle = new ProgressBar.Line('#progress', {
+            color: '#FCB03C',
+            duration: 1000,
+            easing: 'easeInOut'
+        });
+
+        circle.animate(0.5);
+    };
+    var ctx = document.getElementById("keyParamsChart").getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            "labels": [
+                "open a bank account",
+                "9787110370",
+                "Tata Steel"
+            ],
+            "datasets": [
+                {
+                    "label": "My First Dataset",
+                    "data": [
+                        1,
+                        1,
+                        1
+                    ],
+                    "backgroundColor": [
+                        "rgb(255, 99, 132)",
+                        "rgb(54, 162, 235)",
+                        "rgb(255, 205, 86)"
+                    ]
+                }
+            ]
+        },
+        options: {}
+    });
+    var ctx1 = document.getElementById("keyPhrasesChart").getContext('2d');
+    var myChart1 = new Chart(ctx1, {
+        type: 'doughnut',
+        data: {
+            "labels": [
+                "bank account",
+                "mobile number"
+            ],
+            "datasets": [
+                {
+                    "label": "My First Dataset",
+                    "data": [
+                        1,
+                        1
+                    ],
+                    "backgroundColor": [
+                        "rgb(255, 99, 132)",
+                        "rgb(54, 162, 235)",
+                        "rgb(255, 205, 86)"
+                    ]
+                }
+            ]
+        },
+        options: {}
+    });
+</script>
 <script>
     var urlParams = new URLSearchParams(window.location.search);
     console.log(urlParams.get('q'));
     Parse.initialize("myAppId", "myJSKey");
     Parse.serverURL = "http://alphaomega.southindia.cloudapp.azure.com/parse";
-    const params =  { query: "I want to open a bank account. My mobile number is 9787110370" };
-    // Parse.Cloud.run("analyzeText", params).then(function (res) {
-    //     console.log(res);
-    // });
+    const params = {query: "I want to open a bank account. My mobile number is 9787110370"};
+    Parse.Cloud.run("analyzeText", params).then(function (res) {
+        console.log(res);
+        document.getElementById("resolvedQuery").innerHTML = res["dialogFlow"]["resolvedQuery"];
+    });
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 </body>
